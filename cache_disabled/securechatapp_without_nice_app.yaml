@@ -1,7 +1,7 @@
 # image: "dkubex123/llmapp:noreplicas"
 # image: "dkubex123/llmapp:filter_args"
 # image: "dkubex123/llmapp:gi_lama"
-image: "dkubex123/llmapp:gi-llamaindex-5"
+image: "dkubex123/llmapp:gi-llamaindex-6"
 ingressprefix: "/sharmitest4"
 name: "sharmitest4"
 cpu: 1                              #default= -1
