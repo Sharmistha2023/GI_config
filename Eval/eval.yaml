@@ -12,7 +12,7 @@ questions_generator:
     max_tokens: 2048
 
 # ground_truth: /home/ocdlgit/demo-gi/updatedGT.csv
-ground_truth: /home/data/GIconfigs/updated_groudtruth_sept_23_539.csv
+ground_truth: /home/<username>/GI_config/Eval/updated_groudtruth_sept_27_425.csv
 
 rag_configuration: /home/data/GIconfigs/queryrewrite/rag_GI.yaml
 
