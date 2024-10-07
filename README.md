@@ -1,16 +1,23 @@
 # Details of all yamls
 
   ## Eval:
+    
+   prerequisite:
+      - Go to Eval directory
+      - Update rag.yaml file with respectiove end points and serving tokens of llm and embedding model
+      - Update rag.yaml file with absolute address of the nv_acronym.json file
+      - Update eval.yaml file with absolute path of ground truth file and rag.yaml file
+      
     command:
       - d3x dataset evaluate --config eval.yaml
     process for eval:
       - Collect the Ground truth file.
       - Update the rewrite column as question and question column as original_question and answer as reference_answer.
       - Run eval with only sementic score (hide correctness_evaluator,answer_relevancy_evaluator,retrieval_evaluator scores)
-      - collect the output of the eval from mlflow.(mlflow->respective experiment->respective run->artifacts->download eval_result.json file)
+      - collect the output of the eval from mlflow.(mlflow->respective experiment->respective run->artifacts->download eval_results_table.json file)
       - Convert eval_result.json to csv file and gave name as "updated_groundtruth.csv"
       - Run eval with "updated_groundtruth.csv" with parameters correctness_evaluator,answer_relevancy_evaluator,retrieval_evaluator scores except sementic similarity.
-      - collect the output of the eval from mlflow.(mlflow->respective experiment->respective run->artifacts->download eval_result.json file) <-- final 
+      - collect the output of the eval from mlflow.(mlflow->respective experiment->respective run->artifacts->download eval_results_table.json file) <-- final 
          ouput
     run script_for_counting_the_score.py using
       - python3 script_for_counting_the_score.py
@@ -21,40 +28,44 @@
       
     Prediction:
       - python client/sklearn_titanic_client.py <profile-name> <deployment-name> client/test_file/test.csv
- ## Tensorflow:
-    model:
-      - d3x mlflow models import tensorflow-model12 tensorflow tensorflow/model/model.keras
-    Deploy:
-      -  Go to tensorflow folder
-      - d3x serve create -n <deployment-name> -r mlflow --model <model-name> --model_version 1 --depfilepath tensorflow_mnist_serve.deploy
-    Prediction:
-      - python client/tensorflow_client.py <profile-name> <deployment-name> client/images/3.png
-                           or
-      - python client/tensorflow_mnist_client.py <service-token> <endpoint-url> client/images/3.png
- ## Xgboost:
-    model:
-      -  d3x mlflow models import xgboost-model xgboost xgboost/model/xgboost_titanic_model.model
-    Deploy:
-      - Goto xgboost directory
-      - d3x serve create -n <deployment-name> -r mlflow --model <model-name> --model_version 1 --depfilepath xgboost_titanic_serve.deploy
-    Prediction:
-      - python client/xgboost_client.py <profile-name> <deployment-name> client/test_file/test.csv
-                                     or
-      - python client/xgboost_titanic_client.py <service token> <endpoint> client/test_file/test.csv
-  ## Pytorch:
-    model:
-      -  d3x mlflow models import pytorch-model pytorch pytorch/model/model.pt --class_path pytorch/model/sample.py --class_instance model
-    Deploy:
-      -  Goto pytorch directory
-      - d3x serve create -n <deployment-name> -r mlflow --model <model-name> --model_version 1 --depfilepath pytorch_mnist_serve.deploy
-    Prediction:
-      - python client/tensorflow_mnist_client.py <profile-name> <deployment-name> client/images/3.png
-  ## Custom-model:
-    model:
-      d3x mlflow models import custom-model custom_model custom_model/model/
-    Deploy:
-      -Go to custom_model directory
-      - d3x serve create -n <deployment-name> -r mlflow --model <model-name> --model_version 1 --depfilepath custom_mnist_serve.deploy
-    Prediction:
-      - python client/tensorflow_mnist_client.py <profile-name> <deployment-name> client/images/3.png
-  
+ ## Ingestion:
+     - Go to ingestion directory
+     using file reader :
+      - d3x dataset ingest -d <dataset name> --config <absolute path of the file ingestion.yaml>
+    Using scrap_data_reader_ingestion
+      - d3x dataset ingest -d <dataset name> --config <absolute path of scrap_data_reader_ingestion.yaml>
+          with faq(cache enabled)
+      - d3x dataset ingest -d <dataset name> --config <absolute path of scrap_data_reader_ingestion.yaml> -faq
+    Using scrapy_reader_ingestion
+      - d3x dataset ingest -d <dataset name> --config <absolute path of scrapy_reader_ingestion.yaml>
+ ## Cache_disabled:
+ prerequisite:
+    - Go to Cache_disabled. It contains rag.yaml file without cach enabled.
+    - Update rag.yaml file with respective end points and serving tokens of llm and embedding model
+    - Update rag.yaml file with absolute address of the nv_acronym.json file
+    - Update "securechatapp_using_niceapp.yaml" with "NICE_OPENAI_API_KEY" as securellm application key and update absolute path of rag.yaml and queryrewrite.yaml.
+    - Update "securechatapp_without_niceapp.yaml" absolute path of rag.yaml and queryrewrite.yaml
+    
+    securechat app deploy for nice app:
+       d3x apps deploy --config <absolute paths\ of securechatapp_using_niceapp.yaml>
+    securechat app deploy not for nice app:
+       d3x apps deploy --config <absolute paths\ of securechatapp_without_niceapp.yaml>
+    fmquery:
+      d3x dataset query -d <dataset name> --config <absolute paths\ of rag.yaml>
+ ## Cache_enabled:
+ prerequisite:
+    - Go to Cache_enabled. It contains rag.yaml file with cach enabled.
+    - Update rag.yaml file with respective end points and serving tokens of llm and embedding model
+    - Update rag.yaml file with absolute address of the nv_acronym.json file
+    - Update "securechatapp_using_niceapp.yaml" with "NICE_OPENAI_API_KEY" as securellm application key and update absolute path of rag.yaml and queryrewrite.yaml.
+    - Update "securechatapp_without_niceapp.yaml" absolute path of rag.yaml and queryrewrite.yaml
+    
+    securechat app deploy for nice app:
+       d3x apps deploy --config <absolute paths\ of securechatapp_using_niceapp.yaml>
+    securechat app deploy not for nice app:
+       d3x apps deploy --config <absolute paths\ of securechatapp_without_niceapp.yaml>
+    fmquery:
+      d3x dataset query -d <dataset name> --config <absolute paths\ of rag.yaml>
+
+ ## Cache_enabled:
+   -contains config.yaml file of lama3.1 with 8k tokens.
