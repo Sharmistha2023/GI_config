@@ -1,0 +1,74 @@
+dataset: 
+vectorstore: weaviate_vectorstore
+embedding: sky   #openai  #dkubex #sky #huggingface
+search: vector_search
+
+query:
+  post_processor:
+    - acronym_expander
+
+acronym_expander:
+  acr_file: "/home/<user-name>/GIconfig/cache_enabled/nv_acronym.json"
+
+synthesizer:
+  use_adjacent_chunks: True
+    #llm: dkubex
+    #llm_url: 
+    #llmkey: 
+  prompt: |
+      "You are a Retrieval Augmented Generation chatbot. "
+      "Think step by step and answer in a direct and concise tone. "
+      "You are an expert Call Center Agent Assist in the public healthcare insurance marketplace. "
+      "Your job is to extract relevant context for the user's question. "
+      "Never directly answer yes or no, but only provide policy or procedural information from relevant sections "
+      "If the context doesn't provide answer, but provides policy for a part of the question, state the policy. "
+      "Do not assume anything. Use the context and not any prior learnings. "
+      "Write an elaborate answer"
+      "Please do not include any explanatory logic or notes. "
+      "Include confidence score of the generated summary on the scale of 1 to 10 \n"
+      "Do not explain Confidence score. \n"
+      "If the context provides sufficient information reply strictly in the format; Answer: ...\n Confidence score: ... "
+      "If the context provides insufficient information reply `I cannot answer, Please escalte to supervisor or rephrase the question` and don't provide any logic for deriving this conclusion. "
+      "Context (with relevance scores):\n {context_str}\n"
+      "Question: {query_str}\n"
+        #max_tokens: 1024
+  llm: dkubex
+  llm_url: "http://54.160.139.85:30001/v1/"
+  llmkey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2lyZWVzaGEtbWFuZGF2YSIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2xsYW1hMzFkZXY4ay8ifQ.SyAxzCYseOTNagLwTjvN0KKqmG9IsYZToaKCFXpXN9A"
+  window_size: 2
+  max_tokens: 1024
+
+mlflow:
+  experiment: Rag_20sep_2024
+
+
+# openai:
+#   model: 'text-embedding-ada-002'
+#   llmkey: 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
+
+huggingface:
+  model: "BAAI/bge-large-en-v1.5"
+
+sky:
+  embedding_url: "http://54.160.139.85:30002/v1/"
+  embedding_key:  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2lyZWVzaGEtbWFuZGF2YSIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2JnZWRldi8ifQ.RxtyidxNl8k7W9W0Z7gw0694VwFB8vIxo3ZR4_svqE0"
+#   embedding_key: nan
+faq:
+  enabled: true
+  threshold: 0.80
+
+vector_search:
+  top_k: 3
+  rerank: true
+  rerank_topk: 5
+  max_sources: 3
+
+weaviate_vectorstore:
+  vectorstore_provider: dkubex
+  url: ""
+  auth_key: ""
+  textkey: 'paperchunks'
+
+securellm:
+  appkey: "sk-tldu4dq-sa2ewpy-vf2a2xq-kt5ha5i"
+  dkubex_url: "https://ad46449457b5e4d7fbc99eb01dc7dbc8-ba8182fca0a35e00.elb.us-east-1.amazonaws.com/"
