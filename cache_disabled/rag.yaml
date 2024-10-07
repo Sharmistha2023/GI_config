@@ -53,9 +53,7 @@ sky:
   embedding_url: "http://54.160.139.85:30002/v1/"
   embedding_key:  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2lyZWVzaGEtbWFuZGF2YSIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2JnZWRldi8ifQ.RxtyidxNl8k7W9W0Z7gw0694VwFB8vIxo3ZR4_svqE0"
 #   embedding_key: nan
-faq:
-  enabled: true
-  threshold: 0.80
+
 
 vector_search:
   top_k: 3
