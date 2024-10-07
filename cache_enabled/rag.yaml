@@ -8,7 +8,7 @@ query:
     - acronym_expander
 
 acronym_expander:
-  acr_file: "/home/<user-name>/GIconfig/cache_enabled/nv_acronym.json"
+  acr_file: "/home/<user-name>/GI_config/cache_enabled/nv_acronym.json"
 
 synthesizer:
   use_adjacent_chunks: True
