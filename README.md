@@ -35,7 +35,7 @@
     Using scrap_data_reader_ingestion
       - d3x dataset ingest -d <dataset name> --config <absolute path of scrap_data_reader_ingestion.yaml>
           with faq(cache enabled)
-      - d3x dataset ingest -d <dataset name> --config <absolute path of scrap_data_reader_ingestion.yaml> -faq
+      - d3x dataset ingest -d <dataset name> --config <absolute path of scrap_data_reader_ingestion.yaml> --faq
     Using scrapy_reader_ingestion
       - d3x dataset ingest -d <dataset name> --config <absolute path of scrapy_reader_ingestion.yaml>
  ## Cache_disabled:
