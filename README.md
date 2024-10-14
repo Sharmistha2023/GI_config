@@ -67,5 +67,5 @@
     fmquery:
       d3x dataset query -d <dataset name> --config <absolute paths\ of rag.yaml>
 
- ## Cache_enabled:
+ ## model_configs:
    -contains config.yaml file of lama3.1 with 8k tokens.
