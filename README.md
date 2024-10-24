@@ -2,32 +2,33 @@
 
   ## Eval:
     
-   prerequisite:
-      - Go to Eval directory
-      - Update rag.yaml file with respectiove end points and serving tokens of llm and embedding model
-      - Update rag.yaml file with absolute address of the nv_acronym.json file
-      - Update eval.yaml file with absolute path of ground truth file and rag.yaml file
+       prerequisite:
+         * To do everytime
+          - Go to Eval directory
+          - Update rag.yaml file with respectiove end points and serving tokens of llm and embedding model
+          - Update rag.yaml file with absolute address of the nv_acronym.json file
+          - Update eval.yaml file with absolute path of ground truth file and rag.yaml file
+          * Need to do sometime:
+            - If the ground truth has changed, update the ground truth file with the following three columns:
+                 a. Update "answer" column name as "reference_answer"
+                 b. Update "question" column name as "normal_question"
+                 c. Update "scenario" column name as "question".
+            - If any prompt has changed, update the prompt accordingly, following the previous prompt-writing structure:
+                 a. In GI, the context is represented as Context:\n {context}\n, using the variable {context}. However, in dkubex_GI_integration, the context variable used is {context_str}.
+                 b. In GI, the question is represented as Question: {question}\n, using the variable {question}. However, in dkubex_GI_integration, the question variable used is {query_str}."
+
       
-    command:
-      - d3x dataset evaluate --config eval.yaml
-    process for eval:
-      - Collect the Ground truth file.
-      - Update the rewrite column as question and question column as original_question and answer as reference_answer.
-      - Run eval with only sementic score (hide correctness_evaluator,answer_relevancy_evaluator,retrieval_evaluator scores)
-      - collect the output of the eval from mlflow.(mlflow->respective experiment->respective run->artifacts->download eval_results_table.json file)
-      - Convert eval_result.json to csv file and gave name as "updated_groundtruth.csv"
-      - Run eval with "updated_groundtruth.csv" with parameters correctness_evaluator,answer_relevancy_evaluator,retrieval_evaluator scores except sementic similarity.
-      - collect the output of the eval from mlflow.(mlflow->respective experiment->respective run->artifacts->download eval_results_table.json file) <-- final 
-         ouput
-    run script_for_counting_the_score.py using
-      - python3 script_for_counting_the_score.py
-      - Note "eval_results_table.json" file should present on the same directory of the script_for_counting_the_score.py file.
-      - Update the result here "https://docs.google.com/spreadsheets/d/1BytNWa9fJgxM0-fwrkbZmWnDHcb_Y8iTkuUntLxCBS4/edit?usp=drive_link" 
-      - Upload directory on "https://drive.google.com/drive/folders/1y9jy2dpzptjyRtsol6oid19ogTFxIAFe?usp=drive_link" with rag.yaml,          
-        eval.yaml,ground_truth,eval_results_table.json files
+          command:
+                 d3x dataset evaluate --config eval.yaml
+          process for eval:
+             - Collect the Ground truth file.
+             - collect the output of the eval from mlflow.(mlflow->respective experiment->respective run->artifacts->download eval_results_table.json file) <-- final ouput
+          run script_for_counting_the_score.py using
+             - python3 script_for_counting_the_score.py
+             - Note "eval_results_table.json" file should present on the same directory of the script_for_counting_the_score.py file.
+             - Update the result here "https://docs.google.com/spreadsheets/d/1BytNWa9fJgxM0-fwrkbZmWnDHcb_Y8iTkuUntLxCBS4/edit?usp=drive_link" 
+             - Upload directory on "https://drive.google.com/drive/folders/1y9jy2dpzptjyRtsol6oid19ogTFxIAFe?usp=drive_link" with rag.yaml,eval.yaml,ground_truth,eval_results_table.json files
       
-    Prediction:
-      - python client/sklearn_titanic_client.py <profile-name> <deployment-name> client/test_file/test.csv
  ## Ingestion:
      - Go to ingestion directory
      using file reader :
