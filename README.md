@@ -31,40 +31,43 @@
       
  ## Ingestion:
      using share point and scrapeddata reader:
-             d3x dataset ingest -d gi_nv_demo --config /home/data/demo/ingestion_sharepoint_scrapeddata.yaml --client_secret="DCm8Q~glKFasJ9Tt1xtUEi9FD2h77SPhfKnj7aKO" --access_token="access token"
+             d3x dataset ingest -d gi_nv --config <absolute path of ingestion_sharepoint_scrapdatareader.yaml> --client_secret="DCm8Q~glKFasJ9Tt1xtUEi9FD2h77SPhfKnj7aKO" --access_token="access token"
           
       with faq(cache enabled)
-                d3x dataset ingest -d gi_nv_demo --config /home/data/demo/ingestion_sharepoint_scrapeddata.yaml --faq --client_secret="DCm8Q~glKFasJ9Tt1xtUEi9FD2h77SPhfKnj7aKO" --access_token="access token"
+                d3x dataset ingest -d gi_nv --config <absolute path of ingestion_sharepoint_scrapdatareader.yaml> --faq --client_secret="DCm8Q~glKFasJ9Tt1xtUEi9FD2h77SPhfKnj7aKO" --access_token="access token"
       Note:
         collect access token from udai and validity of access token is 24hrs.
  ## Cache_disabled:
- prerequisite:
-    - Go to Cache_disabled. It contains rag.yaml file without cach enabled.
-    - Update rag.yaml file with respective end points and serving tokens of llm and embedding model
-    - Update rag.yaml file with absolute address of the nv_acronym.json file
-    - Update "securechatapp_using_niceapp.yaml" with "NICE_OPENAI_API_KEY" as securellm application key and update absolute path of rag.yaml and queryrewrite.yaml.
-    - Update "securechatapp_without_niceapp.yaml" absolute path of rag.yaml and queryrewrite.yaml
+     prerequisite:
+        - Go to Cache_disabled. It contains rag.yaml file without cach enabled.
+        - Update rag.yaml file with respective end points and serving tokens of llm and embedding model
+        - Update rag.yaml file with absolute address of the nv_acronym.json file
+        - Update "securechatapp_using_niceapp.yaml" with "NICE_OPENAI_API_KEY" as securellm application key and update absolute path of rag.yaml and queryrewrite.yaml.
+        - Update "securechatapp_without_niceapp.yaml" absolute path of rag.yaml and queryrewrite.yaml
     
-    securechat app deploy for nice app:
-       d3x apps deploy --config <absolute paths\ of securechatapp_using_niceapp.yaml>
-    securechat app deploy not for nice app:
-       d3x apps deploy --config <absolute paths\ of securechatapp_without_niceapp.yaml>
+       securechat app deploy for nice app:
+            d3x apps deploy --config <absolute paths\ of securechatapp_using_niceapp.yaml>
+       securechat app deploy not for nice app:
+             d3x apps deploy --config <absolute paths\ of securechatapp_without_niceapp.yaml>
     fmquery:
       d3x dataset query -d <dataset name> --config <absolute paths\ of rag.yaml>
  ## Cache_enabled:
- prerequisite:
-    - Go to Cache_enabled. It contains rag.yaml file with cach enabled.
-    - Update rag.yaml file with respective end points and serving tokens of llm and embedding model
-    - Update rag.yaml file with absolute address of the nv_acronym.json file
-    - Update "securechatapp_using_niceapp.yaml" with "NICE_OPENAI_API_KEY" as securellm application key and update absolute path of rag.yaml and queryrewrite.yaml.
-    - Update "securechatapp_without_niceapp.yaml" absolute path of rag.yaml and queryrewrite.yaml
+     prerequisite:
+        - Go to Cache_enabled. It contains rag.yaml file with cach enabled.
+        - Update rag.yaml file with respective end points and serving tokens of llm and embedding model
+        - Update rag.yaml file with absolute address of the nv_acronym.json file
+        - Update "securechatapp_using_niceapp.yaml" with "NICE_OPENAI_API_KEY" as securellm application key and update absolute path of rag.yaml and queryrewrite.yaml.
+        - Update "securechatapp_without_niceapp.yaml" absolute path of rag.yaml and queryrewrite.yaml
     
-    securechat app deploy for nice app:
-       d3x apps deploy --config <absolute paths\ of securechatapp_using_niceapp.yaml>
-    securechat app deploy not for nice app:
-       d3x apps deploy --config <absolute paths\ of securechatapp_without_niceapp.yaml>
-    fmquery:
-      d3x dataset query -d <dataset name> --config <absolute paths\ of rag.yaml>
+        securechat app deploy for nice app:
+                    d3x apps deploy --config <absolute paths\ of securechatapp_using_niceapp.yaml>
+        securechat app deploy not for nice app:
+                    d3x apps deploy --config <absolute paths\ of securechatapp_without_niceapp.yaml>
+        fmquery:
+            d3x dataset query -d <dataset name> --config <absolute paths\ of rag.yaml> -q "question"
+            d3x dataset query -d <dataset name> --config <absolute paths\ of rag.yaml> -i
+            d3x dataset query -d <dataset name> --config <absolute paths\ of rag.yaml> -b <absolute path of the question.json>
 
  ## model_configs:
-   -contains config.yaml file of lama3.1 with 8k tokens.
+   - contains config.yaml file of lama3.1 with 8k tokens.
+   - https://github.com/oneconvergence/dkubex/blob/dev/d3serve/llmodels/meta-llama--Meta-Llama-3.1-8B-Instruct.yaml
