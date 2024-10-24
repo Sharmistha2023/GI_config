@@ -1,0 +1,75 @@
+splitter: sentence_text_splitter_LC #token_text_splitter #sentence_text_splitter #token_text_splitter #sentence_text_splitter_LC  #semantic_splitter
+embedding: sky  #opnenai,huggingface, sky,dkubex
+metadata:
+  - default
+reader:
+  - scrapeddatareader  
+  - sharepointreader
+
+adjacent_chunks: true
+
+sentence_text_splitter_LC:
+  chunk_size: 256
+  chunk_overlap: 0
+
+huggingface:
+  model: "BAAI/bge-large-en-v1.5"
+
+
+sky:
+  embedding_key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2hydXRoaS1zcmVlIiwidHlwZSI6ImFwaSIsImlkIjoiL2RlcGxveW1lbnQvYmdlbHJnLyJ9.SrP0QQ4OgXWeomcMXFI2pbmVc_4geMt2xWIJmeQBHNM
+  embedding_url: http://54.87.233.171:30003/v1/
+
+  batch_size: 32
+
+mlflow:
+  experiment: GI-Ingestion-oct18
+
+scrapeddatareader:
+  inputs:
+    loader_args:
+      input_dir: /home/data/GI_Data_Aug16/raw/raw_external
+      recursive: true 
+      exclude_hidden: true 
+      raise_on_error: true 
+    data_args:
+      doc_source: "GI"
+      state_category: "NV"
+      designation_category: "Consumer"
+      topic: "General"
+      recursive: true
+  
+sharepointreader:
+  inputs:
+    loader_args:
+      client_id: "89f9aae7-d692-4073-9cfd-7d80fffb48b4" 
+      client_secret: "{{ client_secret }}"
+      tenant_id: "38c7432b-f772-4185-9635-2eac19b9fe45"
+      sharepoint_site_id: "giprod.sharepoint.com,e1f22b67-412b-48c3-a196-57204670bd49,b231bb83-708b-4520-a88a-7a55b2693b54"
+      sharepoint_site: "giprod.sharepoint.com"
+      sharepoint_site_path: "Training-ContactCenter/SSHIX Training Materials"
+      # access_token: ""
+      # drive_id: "b!Zyvy4StBw0ihllcgRnC9SdxSwFt_rrRNtCZtGQxyKImYBIBQkWNlQqc1kYnZVVDq"
+      #just for 3 files in ACA folder:
+      # drive_id: "b!Zyvy4StBw0ihllcgRnC9SdxSwFt_rrRNtCZtGQxyKImYBIBQkWNlQqc1kYnZVVDq"
+      access_token: "{{ access_token }}"   
+      # for entire nv state
+      drive_id: "b!Zyvy4StBw0ihllcgRnC9SYO7MbKLcCBFqIp6VbJpO1TzHmw_zJ6RTY6rmpU3uH-b"
+    data_args:
+      # sharepoint_folder_path: "SSHIX CSR/ACA/"     for single file/folder
+      sharepoint_folder_path: null                   # for all files in sharepoint
+      doc_source: "GI"
+      state_category: "NV"
+      designation_category: "Consumer"
+      topic_category: "General"
+      recursive: true
+
+# confluence:
+#   inputs:
+#     loader_args:
+#       base_url: https://llamaindex123.atlassian.net/wiki
+#       user_name: pvkkolambkar@gmail.com
+#       password: dkubex@123
+#     data_args:
+#       include_attachments: True
+#       space_key: llamaindex
