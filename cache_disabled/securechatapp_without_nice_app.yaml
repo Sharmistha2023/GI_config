@@ -1,4 +1,4 @@
-image: "dkubex123/llmapp:gi-llamaindex-6"
+image: "dkubex123/llmapp:gi-llamaindex-7"
 ingressprefix: "/sharmitest4"
 name: "sharmitest4"
 cpu: 1                              #default= -1
