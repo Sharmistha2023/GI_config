@@ -1,4 +1,7 @@
-dataset: 
+dataset:
+context_combiner:
+  use_adj_chunks: True  #True
+
 vectorstore: weaviate_vectorstore
 embedding: sky   #openai  #dkubex #sky #huggingface
 search: vector_search
@@ -6,53 +9,55 @@ search: vector_search
 query:
   post_processor:
     - acronym_expander
+    - query_rewrite
+parallel_query:
+  batch_size: 32
 
 acronym_expander:
-  acr_file: "/home/<user-name>/GI_config/cache_enabled/nv_acronym.json"
+  acr_file: "absolute path of nv_acronym.json"
+
+query_rewrite:
+  confidence_threshold: 1
+  system_prompt: "absolute path of nv_system_prompt.txt"
+  user_prompt: "absolute path of nv-usr-prompt-new.yaml"
 
 synthesizer:
   use_adjacent_chunks: True
-    #llm: dkubex
-    #llm_url: 
-    #llmkey: 
+  chat_memory_tokens: 6000
   prompt: |
-      "You are a Retrieval Augmented Generation chatbot. "
-      "Think step by step and answer in a direct and concise tone. "
-      "You are an expert Call Center Agent Assist in the public healthcare insurance marketplace. "
       "Your job is to extract relevant context for the user's question. "
       "Never directly answer yes or no, but only provide policy or procedural information from relevant sections "
-      "If the context doesn't provide answer, but provides policy for a part of the question, state the policy. "
       "Do not assume anything. Use the context and not any prior learnings. "
-      "Write an elaborate answer"
+      "Please limit the output to 100 words. "
       "Please do not include any explanatory logic or notes. "
+      "For each part of your answer, indicate which sources most support it "
+      "via valid citation markers at the end of sentences, like (Example2012). "
+      "Note that pregnancy is not a QLE, but child birth is a QLE. \n"
+      "Include sources used at the end of the response"
       "Include confidence score of the generated summary on the scale of 1 to 10 \n"
-      "Do not explain Confidence score. \n"
-      "If the context provides sufficient information reply strictly in the format; Answer: ...\n Confidence score: ... "
-      "If the context provides insufficient information reply `I cannot answer, Please escalte to supervisor or rephrase the question` and don't provide any logic for deriving this conclusion. "
-      "Context (with relevance scores):\n {context_str}\n"
+      "Do not explain Confidence score or Context. Do not generate anything after generating confidence score.  \n"
+      "If the context provides insufficient information reply `I cannot answer, Please escalate to supervisor or rephrase the question` and don't provide any further information. "
+      "If the context provides sufficient information reply strictly in the format; Answer: ...\n Sources: ...\n Confidence score: ... "
+      "Context:\n {context_str}\n"
       "Question: {query_str}\n"
+      "Answer: "
         #max_tokens: 1024
   llm: dkubex
-  llm_url: "http://54.160.139.85:30001/v1/"
-  llmkey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2lyZWVzaGEtbWFuZGF2YSIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2xsYW1hMzFkZXY4ay8ifQ.SyAxzCYseOTNagLwTjvN0KKqmG9IsYZToaKCFXpXN9A"
+  llm_url: "http://54.197.119.100:30003/v1/"
+  llmkey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FuZGVlcC12YW5nYWxhcHVkaSIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2xsYW1hc2t5LyJ9.L6iC5xwV0CjbNTVKO5DxeoRquMHGz9lpvpLI1KDUWs4"
   window_size: 2
   max_tokens: 1024
 
 mlflow:
-  experiment: Rag_20sep_2024
-
-
-# openai:
-#   model: 'text-embedding-ada-002'
-#   llmkey: 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
+  experiment: Rag_9oct_2024
 
 huggingface:
   model: "BAAI/bge-large-en-v1.5"
 
 sky:
-  embedding_url: "http://54.160.139.85:30002/v1/"
-  embedding_key:  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2lyZWVzaGEtbWFuZGF2YSIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2JnZWRldi8ifQ.RxtyidxNl8k7W9W0Z7gw0694VwFB8vIxo3ZR4_svqE0"
-#   embedding_key: nan
+  embedding_url: "http://54.197.119.100:30004/v1/"
+  embedding_key:  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FuZGVlcC12YW5nYWxhcHVkaSIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2JnZXNreS8ifQ.DfJ9g5GVs-drX81OgitTSNlTqHaKYuMj23WdrQQ0hHw"
+
 faq:
   enabled: true
   threshold: 0.90
@@ -67,8 +72,8 @@ weaviate_vectorstore:
   vectorstore_provider: dkubex
   url: ""
   auth_key: ""
-  textkey: 'paperchunks'
+  textkey: 'paperdocs'
 
 securellm:
-  appkey: "sk-tldu4dq-sa2ewpy-vf2a2xq-kt5ha5i"
+  appkey: "sk-2acmgya-4nuewmq-skvpxzi-rasntuy"
   dkubex_url: "https://ad46449457b5e4d7fbc99eb01dc7dbc8-ba8182fca0a35e00.elb.us-east-1.amazonaws.com/"
