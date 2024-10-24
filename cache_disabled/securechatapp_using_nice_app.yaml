@@ -15,8 +15,7 @@ env:
   SECUREAPP_ACCESS_KEY: "allow"
   NICE_OPENAI_API_KEY:  "sk-3hsh3li-733uuiy-twkq2ka-wripouq"   #give another securellm application key for nice app
   DATASET_CONFIG_MAP: "ewogICAgIlBBIjogIlBBXzI1Nl9TZXB0XzEwIiwKICAgICJOViI6ICJOVmZhcSIKfQ=="   # base64 key of multiple dataset
-  FMQUERY_ARGS: "llm --dataset NVfaq --config /home/<username>/GI_config/cache_enabled/rag.yaml"
-  GI_CONFIG_FILE: "/home/<user-name>/GI_config/cache_enabled/queryrewrite.yaml"
+  FMQUERY_ARGS: "llm --dataset NVfaq --config /home/<username>/GI_0854/rag.yaml"
   DKUBEX_CONV_OPTS: "WwogICAgewogICAgICAgICJsYWJlbCI6ICJTdGF0ZSIsCiAgICAgICAgImtleSI6ICJzdGF0ZV9jYXRlZ29yeSIsCiAgICAgICAgInR5cGUiOiAiZHJvcGRvd24iLAogICAgICAgICJvcHRpb25zIjogWyJQQSIsICJWQSIsICJOViJdLAogICAgICAgICJkZWZhdWx0IjogIlBBIgogICAgfSwKICAgIHsKICAgICAgICAibGFiZWwiOiAiRGVzaWduYXRpb24iLAogICAgICAgICJrZXkiOiAiZGVzaWduYXRpb25fY2F0ZWdvcnkiLAogICAgICAgICJ0eXBlIjogInJhZGlvIiwKICAgICAgICAib3B0aW9ucyI6IFsiQnJva2VyIiwgIkNvbnN1bWVyIl0sCiAgICAgICAgImRlZmF1bHQiOiAiQnJva2VyIgogICAgfSwKICAgIHsKICAgICAgICAibGFiZWwiOiAiVG9waWNzIiwKICAgICAgICAia2V5IjogInRvcGljIiwKICAgICAgICAidHlwZSI6ICJkcm9wZG93biIsCiAgICAgICAgImlzUXVlc3Rpb25TY29wZWQiOiB0cnVlLAogICAgICAgICJvcHRpb25zIjogWyJBbGwiLCAiRWxpZ2liaWxpdHkiLCAiRW5yb2xsbWVudHMiLCAiQXBwbGljYXRpb25zIiwgIkFjY291bnQgVGFza3MiLCAiQUNBIl0sCiAgICAgICAgImRlZmF1bHQiOiAiQWxsIgogICAgfQpdCg=="
 port: "3000"                        #default="8080"
 description: "GI integration with D3X" #default=""
