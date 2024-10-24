@@ -1,0 +1,130 @@
+dataset: Nvsept6new
+
+generate_ground_truth: false 
+
+extract_ground_truth: true
+
+# ground_truth: /home/keerthana-parimalla/giconfigs/eval_without_ft/GI_total_gt_oct_10.csv
+ground_truth: /home/<username>/GI_config/Eval/NV-aug-07-to-aug-15_full.csv
+
+rag_configuration: /home/<user-name>/GI_config/Eval/rag.yaml
+
+vectorstore: weaviate_vectorstore
+weaviate_vectorstore:
+   url: ""
+   auth_key: ""
+   provider: dkubex
+   properties:
+   - paperdocs
+   - dkubexfm
+
+evaluator:
+ - semantic_similarity_evaluator       # Vector Similarity
+ - correctness_evaluator               # LLM Similarity
+
+semantic_similarity_evaluator:
+   prompt: "default"
+   metrics:
+   - similarity_score
+
+correctness_evaluator:
+   # prompt: default
+   # prompt: |
+   #     Please act as an impartial judge and evaluate the similarity of the response provided by
+   #     an assistant against the reference answer for user question below.
+   #     You will be given a reference answer and the assistant's answer.
+   #     Your job is to compare the assistant's answer with the reference answer for similarity
+   #     in the context of the user's question.
+   #     Provide a score between 1 and 10 with an interval of 1
+   #     Do not allow the length of the response to influence your evaluation.
+   prompt: |
+       You are an expert evaluation system for a question answering chatbot.
+
+       You are given the following information:
+       - a user query, and
+       - a generated answer
+
+       You may also be given a reference answer to use for reference in your evaluation.
+
+       Your job is to judge the relevance and correctness of the generated answer.
+       Output a single score that represents a holistic evaluation.
+       You must return your response in a line with only the score.
+       Do not return answers in any other format.
+       On a separate line provide your reasoning for the score as well.
+
+       Please act as an impartial judge and evaluate the similarity of the response provided by
+       an assistant against the reference answer for user question below.
+       You will be given a reference answer and the assistant's answer.
+       Your job is to compare the assistant's answer with the reference answer for similarity
+       in the context of the user's question.
+       Provide a score between 1 and 10 with an interval of 1
+       Do not allow the length of the response to influence your evaluation.
+       Be as objective as possible. Output your
+   llm: dkubex
+   llm_url: "http://54.197.119.100:30002/v1/"
+   llmkey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FuZGVlcC12YW5nYWxhcHVkaSIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2xsYW1hc2t5LyJ9.L6iC5xwV0CjbNTVKO5DxeoRquMHGz9lpvpLI1KDUWs4"
+   max_tokens: 1024
+
+cross_vector_similarity_evaluator:
+    prompt: "default"
+    llm: openai         # dkubex
+    llmkey: "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" # <llmkey?
+    llm_url: ""             # http://54.179.35.250:30002/v1/
+    max_tokens: 2048
+    rag_configuration: "/home/sai-bandela/simple_rag.yaml"
+
+answer_relevancy_evaluator:
+  prompt: "default"
+  llm: dkubex
+  llm_url: "http://54.200.225.152:30001/v1/"
+  llmkey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoib2NkbGdpdCIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2xsYW1hMzEtOGsvIn0.d8TIlt4xChKNMiWgGfQucnwsa1R38cU5xEiVKjr6e4E"
+
+  max_tokens: 2048
+
+retrieval_evaluator:
+  weaviate_vectorstore:
+      kind: weaviate
+      vectorstore_provider: dkubex
+      textkey: paperdocs
+      # embedding_class: HuggingFaceEmbedding               # Use 'HuggingFaceEmbedding' for embedding models from HuggingFace, or 'OpenAIEmbedding' for OpenAI embeddings
+      # embedding_model: "BAAI/bge-large-en-v1.5"           # Embedding model name
+      ### dkubex embedding config
+      embedding_provider: "sky"
+      embedding_url: http://35.91.254.178:30001/v1/
+      embedding_key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoib2NkbGdpdCIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2JnZWxyZy8ifQ.Ljt4IdI7MPtK2M9hdQ5Cu3ZVQnCEvNZFbM69CowVuek
+      llmkey: ""                                          # API key for the embedding model (if required)
+      similarity_top_k: 3
+  metrics:
+  - mrr
+  - hit_rate
+ 
+groundtruth_extractor:
+   date_start:  "2024-10-21" # date_start # year-month-day yyyy-mm-dd
+   date_end: "2024-10-22" # date_end
+   no_of_rows: 10    # This number of records are extracted from the start and end data.
+
+   email: admin@dkubex.ai
+   password: noB3y8K9VC0tmMgG # password
+   deployment_url: "http://54.197.119.100:30002/v1/"
+   deployment_key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic2FuZGVlcC12YW5nYWxhcHVkaSIsInR5cGUiOiJhcGkiLCJpZCI6Ii9kZXBsb3ltZW50L2xsYW1hc2t5LyJ9.L6iC5xwV0CjbNTVKO5DxeoRquMHGz9lpvpLI1KDUWs4"
+   state: NV # NV, PA etc.
+   filter_user: ''
+  #  supabase_url: http://supabase-kong.securellm:8000 
+   supabase_url: https://devbot.ginicechat.com/supabase
+   sllmbase_url: https://devbot.ginicechat.com/securellm
+   supabase_key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICAgInJvbGUiOiAiYW5vbiIsCiAgICAiaXNzIjogInN1cGFiYXNlIiwKICAgICJpYXQiOiAxNjc1NDAwNDAwLAogICAgImV4cCI6IDE4MzMxNjY4MDAKfQ.ztuiBzjaVoFHmoljUXWmnuDN6QU2WgJICeqwyzyZO88 # key
+   extract_all: True
+   # Filter out securellm entries associated with below names.
+   dev_team: 
+   - "help"
+   - "sagar-suman"
+   - "vedant-acharya"
+   - "udai-kiran"
+   - "hemanth-ravi"
+   # - "kiran-vijapure"
+   - "songole"
+   - "vivek"
+   - "nice"
+
+tracking:
+   experiment: kp-extract-eval-oct22
