@@ -30,15 +30,13 @@
              - Upload directory on "https://drive.google.com/drive/folders/1y9jy2dpzptjyRtsol6oid19ogTFxIAFe?usp=drive_link" with rag.yaml,eval.yaml,ground_truth,eval_results_table.json files
       
  ## Ingestion:
-     - Go to ingestion directory
-     using file reader :
-      - d3x dataset ingest -d <dataset name> --config <absolute path of the file ingestion.yaml>
-    Using scrap_data_reader_ingestion
-      - d3x dataset ingest -d <dataset name> --config <absolute path of scrap_data_reader_ingestion.yaml>
-          with faq(cache enabled)
-      - d3x dataset ingest -d <dataset name> --config <absolute path of scrap_data_reader_ingestion.yaml> --faq
-    Using scrapy_reader_ingestion
-      - d3x dataset ingest -d <dataset name> --config <absolute path of scrapy_reader_ingestion.yaml>
+     using share point and scrapeddata reader:
+             d3x dataset ingest -d gi_nv_demo --config /home/data/demo/ingestion_sharepoint_scrapeddata.yaml --client_secret="DCm8Q~glKFasJ9Tt1xtUEi9FD2h77SPhfKnj7aKO" --access_token="access token"
+          
+      with faq(cache enabled)
+                d3x dataset ingest -d gi_nv_demo --config /home/data/demo/ingestion_sharepoint_scrapeddata.yaml --faq --client_secret="DCm8Q~glKFasJ9Tt1xtUEi9FD2h77SPhfKnj7aKO" --access_token="access token"
+      Note:
+        collect access token from udai and validity of access token is 24hrs.
  ## Cache_disabled:
  prerequisite:
     - Go to Cache_disabled. It contains rag.yaml file without cach enabled.
