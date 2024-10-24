@@ -21,7 +21,7 @@ engine_config:
     trust_remote_code: true
     max_num_batched_tokens: 8192
     max_num_seqs: 64
-    gpu_memory_utilization: 0.85
+    gpu_memory_utilization: 0.95
   max_total_tokens: 8192
   generation:
     # Format to convert user API input into prompts to feed into the LLM engine. {instruction} refers to user-supplied input.
