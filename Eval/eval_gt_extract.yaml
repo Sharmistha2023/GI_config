@@ -20,7 +20,8 @@ weaviate_vectorstore:
 
 evaluator:
  - semantic_similarity_evaluator       # Vector Similarity
- - correctness_evaluator               # LLM Similarity
+ - correctness_evaluator   # LLM Similarity
+ - retrieval_evaluator
 
 semantic_similarity_evaluator:
    prompt: "default"
